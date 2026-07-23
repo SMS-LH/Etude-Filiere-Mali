@@ -1,0 +1,24 @@
+============================================================
+EDA – Étape 5 : Profilage intégré des ménages (mil)
+Date : 2026-07-23 01:41:56 
+============================================================
+
+Répartition des ménages (culture principale) :
+# A tibble: 4 × 3
+  groupe                            n   pct
+  <chr>                         <int> <dbl>
+1 Consommateur uniquement        2253 36.7 
+2 Ni producteur ni consommateur  2720 44.3 
+3 Producteur uniquement           231  3.76
+4 Producteur-consommateur         939 15.3 
+
+Score FIES (0-8) :
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  0.000   0.000   1.000   1.792   3.000   8.000 
+Seuils : modéré >= 4, sévère >= 7 (FAO).
+
+Score HDDS (0-12) :
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  2.000   8.000  10.000   9.279  11.000  12.000 
+
+EDA terminée.

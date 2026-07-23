@@ -1,0 +1,354 @@
+---
+title: "Analyse de la filière mil et sécurité alimentaire au Mali"
+subtitle: "À partir des données EHCVM 2021‑2022"
+author: "Mourtalla SALL \\& Aissatou SAMB"
+institute: "ENSAE Pierre Ndiaye | ISEP2"
+date: "Année académique 2025-2026"
+output: 
+  beamer_presentation:
+    latex_engine: xelatex
+    slide_level: 2
+    theme: "Boadilla"
+    colortheme: "seahorse"
+    fonttheme: "structurebold"
+classoption: "aspectratio=169"
+header-includes:
+  - \usepackage[french]{babel}
+  - \usepackage{booktabs}
+  - \usepackage{setspace}
+  - \usepackage{float}
+  - \definecolor{DarkBlue}{RGB}{20, 50, 100}
+  - \definecolor{DarkRed}{RGB}{150, 30, 30}
+  - \definecolor{DarkGreen}{RGB}{30, 100, 30}
+  - \setbeamercolor{structure}{fg=DarkBlue}
+  - \setbeamercolor{block title}{bg=DarkBlue, fg=white}
+  - \setbeamercolor{block body}{bg=gray!10, fg=black}
+  - \setbeamercolor{alertblock title}{bg=DarkRed, fg=white}
+  - \setbeamercolor{alertblock body}{bg=red!5, fg=black}
+  - \setbeamercolor{exampleblock title}{bg=DarkGreen, fg=white}
+  - \setbeamercolor{exampleblock body}{bg=green!5, fg=black}
+  - \setbeamertemplate{navigation symbols}{}
+  - \setbeamerfont{frametitle}{size=\Large, series=\bfseries}
+---
+
+# PLAN DE LA PRÉSENTATION
+
+\tableofcontents
+
+# INTRODUCTION
+
+## Contexte général
+\vspace{0.3cm}
+\begin{block}{Le Mali : un pays sahélien sous tensions}
+\begin{itemize}
+    \item Population de 21,5 millions (2021), croissance 3,2\% par an.
+    \item Agriculture = 38\% du PIB, \textgreater{} 2/3 des emplois.
+    \item Production céréalière (8,5 Mt en 2021) insuffisante ; importations massives de riz, blé, maïs.
+    \item Pauvreté : 44\% de la population ; inflation alimentaire \textgreater{} 10\% en 2022.
+    \item Malnutrition chronique : 24\% des enfants de moins de 5 ans.
+    \item Chocs climatiques récurrents et insécurité au nord/centre.
+\end{itemize}
+\end{block}
+
+## La sécurité alimentaire et le concept de filière
+\vspace{0.3cm}
+\begin{block}{Sécurité alimentaire (FAO, 1996)}
+\textit{« accès physique, social et économique à une nourriture suffisante, saine et nutritive... »}
+\end{block}
+
+\vspace{0.2cm}
+Quatre piliers : disponibilité, accès, utilisation, stabilité.
+
+\vspace{0.3cm}
+\begin{block}{Filière agricole}
+Ensemble des acteurs, activités et flux, de la production à la consommation, qui créent de la valeur autour d'un produit.
+\end{block}
+
+$\Rightarrow$ Une étude de filière permet d'identifier des leviers pour améliorer la sécurité alimentaire.
+
+## Problématique et questions de recherche
+\vspace{0.3cm}
+\begin{alertblock}{Question centrale}
+Parmi les principaux produits agricoles maliens, lequel présente le plus fort potentiel pour améliorer la sécurité alimentaire des ménages, et quels sont les facteurs qui conditionnent la performance de sa filière ?
+\end{alertblock}
+
+\vspace{0.3cm}
+\begin{enumerate}
+    \item Quelle céréale occupe la place la plus stratégique ?
+    \item Quels sont les déterminants de sa production, commercialisation, consommation ?
+    \item Quel est l'impact de la participation à cette filière sur l'insécurité alimentaire (FIES) et la diversité alimentaire (HDDS) ?
+\end{enumerate}
+
+## Démarche générale
+\vspace{0.3cm}
+\begin{exampleblock}{Une approche en deux étapes}
+\begin{enumerate}
+    \item \textbf{Comparaison empirique} de plusieurs céréales sur la base d'indicateurs de consommation, production et commercialisation $\rightarrow$ sélection du produit le plus structurant.
+    \item \textbf{Analyse approfondie} de la filière retenue : production, commercialisation, consommation, profilage des ménages, impact sur la sécurité alimentaire.
+\end{enumerate}
+\end{exampleblock}
+
+\vspace{0.3cm}
+Données : EHCVM 2021‑2022, enquête communautaire, prix de marché, climat, FAOSTAT.
+
+# REVUE DE LITTÉRATURE ET CHOIX DES PRODUITS CANDIDATS
+
+## Justification par la littérature
+\vspace{0.3cm}
+\begin{block}{Le rôle central des céréales au Sahel}
+\begin{itemize}
+    \item \textbf{FAO (2020)} : mil et sorgho = \textgreater{} 60\% de la production céréalière malienne, base de l'alimentation rurale.
+    \item \textbf{Diarra et al. (2018)} : les producteurs de mil résistent mieux aux chocs climatiques que les dépendants du riz importé.
+    \item \textbf{PAM (2021)} : le mil, indicateur avancé des crises alimentaires (sensibilité aux prix).
+    \item \textbf{Sissoko et al. (2019)} : dépendance au riz importé menace la souveraineté alimentaire.
+    \item \textbf{Coulibaly (2020)} : expansion du maïs dans le sud, mais forte variabilité.
+\end{itemize}
+\end{block}
+
+\vspace{0.3cm}
+$\Rightarrow$ Ces travaux justifient de concentrer la comparaison sur les quatre principales céréales : \textbf{mil, sorgho, riz, maïs}.
+
+# DONNÉES ET MÉTHODOLOGIE
+
+## L'enquête EHCVM 2021‑2022
+\vspace{0.2cm}
+\begin{itemize}
+    \item 6 143 ménages, représentative aux niveaux national et régional.
+    \item Sondage stratifié à deux degrés, avec poids de sondage.
+    \item Sections mobilisées : S00 (identification, GPS), S01 (chef de ménage), S07B (consommation 7 jours), S08A (FIES), S16A (parcelles), S16B (intrants), S16C (récoltes), S16D (utilisation production).
+    \item Données communautaires (S01\_CO, S03\_CO) : infrastructures, services, pratiques.
+\end{itemize}
+
+\vspace{0.2cm}
+\textbf{Données auxiliaires} : prix de marché (`ehcvm\_prix\_mli2021`), précipitations CHIRPS, températures ERA5, statistiques FAOSTAT.
+
+## Indicateurs et traitements clés
+\vspace{0.2cm}
+\begin{block}{Deux indicateurs de sécurité alimentaire}
+\begin{itemize}
+    \item \textbf{FIES} (0‑8) : score d'insécurité alimentaire vécue, seuils modéré ($\ge 4$) et sévère ($\ge 7$).
+    \item \textbf{HDDS} (0‑12) : score de diversité alimentaire (nombre de groupes consommés en 7 jours).
+\end{itemize}
+\end{block}
+
+\vspace{0.2cm}
+\textbf{Traitements appliqués} :
+\begin{itemize}
+    \item Table de conversion UML $\rightarrow$ kg construite à partir des couples déclarés (médianes).
+    \item Production = somme des utilisations converties. Superficie = GPS prioritaire. Rendement winsorisé à 1\%/99\%.
+    \item Pondérations systématiques pour l'inférence.
+\end{itemize}
+
+# CHOIX DU PRODUIT STRATÉGIQUE
+
+## Comparaison empirique des quatre céréales
+\vspace{0.2cm}
+\begin{table}[H]
+\centering
+\footnotesize
+\begin{tabular}{lcccc}
+\hline
+\textbf{Indicateur} & \textbf{Mil} & \textbf{Sorgho} & \textbf{Riz} & \textbf{Maïs} \\
+\hline
+Prévalence de consommation (\%) & 56,3 & 22,1 & 90,0 & 33,5 \\
+Part dans la dépense alimentaire (\%) & 7,1 & 2,4 & 13,4 & 3,9 \\
+Contribution calorique (\%) & 16,1 & 6,1 & 25,1 & 19,2 \\
+Prévalence de production (\%) & \textbf{29,4} & 18,0 & 16,1 & 21,7 \\
+Superficie totale (ha) & \textbf{3 110 477} & 1 269 678 & 1 056 248 & 1 274 030 \\
+Rendement moyen (kg/ha) & 469 & 593 & 2 053 & 1 461 \\
+Valeur des ventes (Mds FCFA) & 12,6 & 2,1 & 10,1 & 10,9 \\
+Taux de commercialisation (\%) & 6,9 & 3,5 & 11,3 & 16,5 \\
+\hline
+\end{tabular}
+\end{table}
+
+\vspace{0.2cm}
+\begin{block}{Le mil, produit stratégique}
+\begin{itemize}
+    \item Plus forte prévalence de production (29,4\% des ménages).
+    \item Plus grande superficie cultivée (3,1 millions d'hectares).
+    \item Culture entièrement locale, résiliente, adaptée au climat sahélien.
+\end{itemize}
+\end{block}
+
+# PRODUCTION ET RENDEMENTS DU MIL
+
+## Superficies, production et carte
+\vspace{0.2cm}
+\begin{itemize}
+    \item Superficie moyenne par ménage producteur : 2,1 ha (médiane).
+    \item Production moyenne : 850 kg/ménage.
+    \item Rendement moyen winsorisé : \textbf{469 kg/ha} (médiane 250 kg/ha).
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.65\textwidth]{../outputs/maps/carte_rendement_mil.png}
+\caption{Rendements moyens du mil par région (kg/ha)}
+\end{figure}
+
+## Déterminants des rendements
+\vspace{0.2cm}
+\begin{table}[H]
+\centering
+\footnotesize
+\begin{tabular}{lcc}
+\hline
+\textbf{Variable} & \textbf{Coefficient} & \textbf{Écart‑type} \\
+\hline
+Utilisation d'engrais minéral & 0,417** & (0,140) \\
+Labour attelé & 0,979*** & (0,263) \\
+Fertilité déclarée bonne & 0,466** & (0,179) \\
+Région Koulikoro & 1,811*** & (0,489) \\
+Région Sikasso & 1,616** & (0,556) \\
+Région Ségou & 2,126*** & (0,492) \\
+\hline
+\multicolumn{3}{l}{$N = 826$, $R^2 = 0,351$ ; *** p<0,01, ** p<0,05} \\
+\end{tabular}
+\end{table}
+
+\vspace{0.2cm}
+\textbf{Interprétations} : engrais (+42\%), labour attelé (+98\%), fertilité bonne (+47\%). Fortes disparités régionales persistent.
+
+# COMMERCIALISATION ET PRIX DU MIL
+
+## Circuits de vente et niveaux de prix
+\vspace{0.3cm}
+\begin{itemize}
+    \item Seuls \textbf{10,9\%} des producteurs déclarent une vente.
+    \item Taux de commercialisation : \textbf{6,9\%}.
+    \item Canaux : marchés (46\%), ménages/particuliers (45\%), opérateurs privés (7\%).
+    \item Prix producteur médian : \textbf{200 FCFA/kg}.
+    \item Prix à la consommation médian : \textbf{340 FCFA/kg}.
+    \item Marge producteur‑consommateur : \textbf{25,5\%}.
+\end{itemize}
+
+## Cartes des prix
+\vspace{0.2cm}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.80\textwidth]{../outputs/maps/carte_prix_producteur_mil.png}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.80\textwidth]{../outputs/maps/carte_prix_conso_mil.png}
+\end{figure}
+
+# CONSOMMATION ET DEMANDE DE MIL
+
+## Profil de consommation
+\vspace{0.3cm}
+\begin{itemize}
+    \item Prévalence de consommation : \textbf{52,0\%} des ménages.
+    \item Quantité moyenne hebdomadaire : \textbf{3,23 kg/ménage}.
+    \item Autoconsommation : 22,2\% de la quantité consommée.
+    \item Part dans la dépense alimentaire totale : \textbf{7,1\%}.
+    \item \textbf{Le mil, aliment des ménages pauvres} : sa part décroît avec le niveau de vie (28,7\% chez les plus pauvres vs 22,8\% chez les plus riches), au profit du riz.
+    \item Acheteurs nets : 24,9\% des ménages (jusqu'à 67,4\% à Tombouctou).
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.65\textwidth]{../outputs/figures/distribution_conso_mil.png}
+\end{figure}
+
+# PROFILAGE DES MÉNAGES
+
+## Typologie selon le lien à la filière mil
+\vspace{0.2cm}
+\begin{table}[H]
+\centering
+\footnotesize
+\begin{tabular}{lcccc}
+\hline
+\textbf{Indicateur} & \textbf{Prod.‑conso.} & \textbf{Conso. uniquement} & \textbf{Prod. uniquement} & \textbf{Aucun} \\
+\hline
+Effectif & 939 & 2 253 & 231 & 2 720 \\
+Score FIES (0‑8) & \textbf{2,92} & 2,45 & 2,17 & 2,26 \\
+Score HDDS (0‑12) & \textbf{8,85} & 9,74 & 8,66 & 9,16 \\
+Pauvreté (\%) & \textbf{33,3} & 24,5 & 21,7 & 21,0 \\
+Superficie agricole (ha) & 3,5 & 0,0 & 4,1 & 0,0 \\
+Bovins (nombre) & 1,2 & 0,0 & 2,3 & 0,0 \\
+Accès au crédit (\%) & 5,2 & 8,1 & 4,8 & 6,9 \\
+Coopérative (\%) & 28,1 & 22,5 & 30,3 & 23,8 \\
+\hline
+\end{tabular}
+\end{table}
+
+\vspace{0.2cm}
+\begin{itemize}
+    \item Les \textbf{producteurs‑consommateurs} sont les plus exposés à l'insécurité alimentaire et à la pauvreté.
+    \item Ils sont majoritairement ruraux, localisés à Ségou et Mopti, avec un accès limité aux services.
+\end{itemize}
+
+# IMPACT SUR LA SÉCURITÉ ALIMENTAIRE
+
+## Modèles de régression (FIES et HDDS)
+\vspace{0.2cm}
+\begin{table}[H]
+\centering
+\footnotesize
+\begin{tabular}{lcc}
+\hline
+\textbf{Variable} & \textbf{FIES} & \textbf{HDDS} \\
+\hline
+Producteur de mil & 0,146 & -0,060 \\
+Consommateur de mil & 0,080 & \textbf{0,354***} \\
+Taille du ménage & -0,059*** & 0,080*** \\
+Log(dépense/tête + 1) & -1,050*** & 1,109*** \\
+Milieu rural & -0,120 & -0,485*** \\
+Superficie agricole (ha) & -0,038*** & -0,014* \\
+Chocs subis & 0,375*** & 0,192*** \\
+\hline
+\multicolumn{3}{l}{$N = 6 068$, $R^2_{FIES} = 0,443$, $R^2_{HDDS} = 0,306$} \\
+\end{tabular}
+\end{table}
+
+\vspace{0.2cm}
+\begin{itemize}
+    \item Le statut de producteur seul n'a pas d'effet significatif.
+    \item \textbf{La consommation de mil est associée à une meilleure diversité alimentaire} (+0,35 point de HDDS).
+    \item Le taux de commercialisation montre un effet positif mais à interpréter avec prudence (faible nombre de vendeurs).
+\end{itemize}
+
+# DISCUSSION ET IMPLICATIONS POLITIQUES
+
+## Principaux résultats et paradoxes
+\vspace{0.3cm}
+\begin{block}{Le paradoxe du mil}
+Le mil est la culture vivrière la plus répandue, mais elle reste peu productive (469 kg/ha), faiblement intégrée au marché (6,9\% de taux de commercialisation), et les ménages qui en vivent sont les plus vulnérables (FIES = 2,92).
+\end{block}
+
+\vspace{0.3cm}
+\begin{exampleblock}{Pistes d'action}
+\begin{enumerate}
+    \item \textbf{Améliorer la productivité} : accès aux engrais, mécanisation légère, semences améliorées.
+    \item \textbf{Désenclaver les zones de production} : infrastructures de marché, information sur les prix.
+    \item \textbf{Renforcer les organisations de producteurs} (coopératives).
+    \item \textbf{Cibler les filets sociaux} sur les ménages producteurs‑consommateurs de mil.
+\end{enumerate}
+\end{exampleblock}
+
+## Limites et perspectives
+\vspace{0.3cm}
+\begin{itemize}
+    \item Données transversales $\rightarrow$ pas d'inférence causale stricte.
+    \item Incertitudes liées à la conversion des unités locales.
+    \item Faible nombre de vendeurs (98) limite la robustesse des analyses de commercialisation.
+    \item Endogénéité de la décision de produire non traitée.
+    \item Pistes futures : données de panel, méthodes quasi‑expérimentales, intégration de données satellitaires.
+\end{itemize}
+
+# CONCLUSION
+
+\vspace{0.5cm}
+\begin{center}
+{\Large Le mil, culture résiliente et pilier de l'alimentation rurale au Mali, présente un potentiel important pour améliorer la sécurité alimentaire.}
+
+\vspace{0.5cm}
+\textbf{Cependant, sa faible productivité, sa commercialisation limitée et la vulnérabilité des ménages qui en dépendent appellent des politiques ciblées d'investissement dans la filière.}
+
+\vspace{1cm}
+{\Large Merci de votre attention.}
+\end{center}

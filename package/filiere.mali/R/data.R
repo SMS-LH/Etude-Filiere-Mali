@@ -1,0 +1,53 @@
+# =============================================================================
+# R/data.R
+# Documentation des donnees internes du package filiereMLI
+# =============================================================================
+
+#' Plafonds physiologiques de rendement par culture
+#'
+#' Table de reference des rendements maximaux physiologiquement atteignables
+#' pour les principales cultures tropicales et subtropicales. Chaque plafond
+#' correspond au haut de la fourchette du potentiel physiologique documente
+#' dans la litterature, exprime en kilogrammes par hectare. Cette table sert
+#' de borne superieure pour detecter les rendements aberrants dans les donnees
+#' d'enquete (au-dela du plafond, une valeur est consideree comme une erreur
+#' de declaration ou de saisie).
+#'
+#' @format Un data frame (tibble) de 68 lignes et 5 colonnes :
+#' \describe{
+#'   \item{culture}{Nom standard de la culture, en anglais (identifiant).}
+#'   \item{nom_scientifique}{Nom scientifique (binome latin) de l'espece.}
+#'   \item{plafond_kg_ha}{Plafond physiologique de rendement, en kg/ha
+#'     (haut de fourchette du potentiel).}
+#'   \item{nature_produit}{Nature du produit recolte auquel se rapporte le
+#'     plafond (ex. grain sec, tubercules frais, fibre, huile).}
+#'   \item{source}{Sources principales du plafond (institutions et references).}
+#' }
+#'
+#' @details
+#' Les plafonds proviennent du croisement de sources institutionnelles
+#' (FAO, Crop Trust, ICRISAT, IITA, CIAT, CIP, CIRAD, IRRI, CIMMYT) et
+#' d'articles scientifiques. Ils representent le potentiel maximal en
+#' conditions optimales (irrigation, fertilisation, varietes ameliorees),
+#' rarement atteint en champ paysan. Pour les cultures perennes, le plafond
+#' est annuel (indique par "/an" dans la nature du produit).
+#'
+#' @source Compilation d'apres FAO, Crop Trust, ICRISAT, IITA, CIAT, CIP,
+#'   CIRAD, IRRI, CIMMYT et litterature scientifique (voir colonne source).
+"plafonds_rendement"
+
+#' Table de conversion des unités locales de production
+#'
+#' Un data.frame contenant les facteurs de conversion pour les cultures
+#' (mil, sorgho, riz) par unité locale (charretée, bassine, panier, etc.)
+#' estimés à partir des couples UML/kg observés dans les données EHCVM
+#' Mali 2021/2022.
+#'
+#' @format Un data.frame avec les colonnes :
+#' \describe{
+#'   \item{codpr}{Code de la culture (1 = mil, 2 = sorgho, 3 = riz)}
+#'   \item{unite}{Code de l'unité locale de mesure}
+#'   \item{ratio_kg_uml}{Facteur de conversion : nombre de kg par UML}
+#' }
+#' @source Données EHCVM Mali 2021/2022, calculs des auteurs.
+"conversion"

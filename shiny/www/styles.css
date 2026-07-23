@@ -1,0 +1,162 @@
+/* --- Fond général de l'application --- */
+body {
+  background-color: #f7f3ed;
+  color: #111827;
+  font-family: 'Inter', sans-serif;
+}
+
+/* --- Carte héro à gauche avec image de fond et overlay --- */
+.hero-banner-card {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.5)), url('image_mil.jpg');
+  background-size: cover;
+  background-position: center;
+  border-radius: 20px;
+  padding: 35px;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.hero-title-white {
+  color: #ffffff !important;
+  font-weight: 700;
+  font-size: 2.3rem;
+  margin-bottom: 6px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero-sub-white {
+  color: #f3f4f6 !important;
+  font-size: 1.05rem;
+  margin-bottom: 30px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Badges / Pilules translucides */
+.hero-badges-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.hero-badge {
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 30px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* --- Cartes à fond clair & textes sombres --- */
+.light-card {
+  background-color: #fcf8f2 !important; /* Couleur claire/crème */
+  border-radius: 20px !important;
+  border: 1px solid #f0e6d8 !important;
+  padding: 20px !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+/* Titres et textes hors image en noir/sombre */
+.card-title-dark {
+  color: #111827 !important;
+  font-weight: 700 !important;
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+}
+
+.card-text-dark, .light-card p, .light-card label {
+  color: #374151 !important;
+  font-size: 0.9rem;
+}
+
+/* Style des menus déroulants (Fond anthracite / Texte blanc) */
+.light-card .form-select, .light-card .selectize-input {
+  background-color: #374151 !important;
+  color: #ffffff !important;
+  border-radius: 8px;
+  border: none;
+}
+
+/* Bouton flottant du chat */
+.btn-floating-chat {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #d97706;
+  color: white;
+  border: none;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(217, 119, 6, 0.4);
+  z-index: 1050;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.btn-floating-chat:hover {
+  transform: scale(1.1);
+  background-color: #c06805;
+}
+
+/* Historique du chat */
+.chat-history {
+  overflow-y: auto;
+  padding: 10px 0;
+  max-height: calc(100vh - 250px);
+}
+
+/* Bulles de message */
+.chat-message {
+  margin-bottom: 12px;
+  display: flex;
+}
+.chat-message.user {
+  justify-content: flex-end;
+}
+.chat-message.assistant {
+  justify-content: flex-start;
+}
+.chat-bubble {
+  max-width: 80%;
+  padding: 10px 15px;
+  border-radius: 18px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+.chat-message.user .chat-bubble {
+  background-color: #d97706;
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+.chat-message.assistant .chat-bubble {
+  background-color: #f3ece1;
+  color: #2c2c2c;
+  border-bottom-left-radius: 4px;
+}
+
+/* Zone de saisie */
+.chat-input {
+  border-top: 1px solid #e2dbd0;
+  padding-top: 10px;
+}
+.chat-input textarea {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  resize: none;
+}

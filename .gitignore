@@ -1,0 +1,8 @@
+data/raw/faostat/FoodBalanceSheets_E_All_Data_*.csv
+data/raw/spatial/osm/*.osm.pbf
+data/raw/climat/*.tif
+data/raw/climat/*.nc
+.Rproj.user
+.Rhistory
+.RData
+.Renviron

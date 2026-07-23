@@ -1,0 +1,52 @@
+============================================================
+EDA – Étape 4 : Consommation et demande de mil
+Date : 2026-07-23 01:41:48 
+============================================================
+
+1. Présence et modes d'acquisition
+------------------------------------
+Nombre de lignes de consommation (mil, farine, semoule) : 3297
+Modes d'acquisition (s07bq06) :
+
+   1    2    3    4    5 
+ 243  773  587 1047  647 
+1=Acheté, 2=Autoconsommé, 3=Reçu en cadeau, 4=Prélèvement propre commerce, 5=Troc
+
+2. Quantités déclarées (kg)
+-----------------------------
+Quantités (kg) : min=0.00  Q1=1.00  médiane=3.00  Q3=7.00  max=70.00
+Décision : conversion NSU avec table EHCVM, fallback médian national.
+
+3. Prévalence de consommation
+------------------------------
+Prévalence pondérée : 56.3%
+Décision : indicateur calculé en pondérant par hhweight.
+
+4. Achats récents
+------------------
+Nombre de lignes d'achats récents : 1603
+Médiane du prix d'achat brut (FCFA/unité) : 1100
+
+5. Exploration communautaire
+-----------------------------
+Consommation selon la distance à la ville :
+# A tibble: 5 × 2
+  dist_classe qte_moy
+  <fct>         <dbl>
+1 <5 km          3.66
+2 5-15 km        3.54
+3 15-50 km       3.44
+4 >50 km         3.00
+5 <NA>           2.10
+
+Consommation selon l'accès au marché :
+# A tibble: 5 × 2
+  marche_classe qte_moy
+  <fct>           <dbl>
+1 <30 min          3.80
+2 30-60 min        3.26
+3 60-120 min       2.22
+4 >120 min         3.79
+5 <NA>             2.92
+
+EDA terminée.

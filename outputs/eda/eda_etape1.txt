@@ -1,0 +1,51 @@
+============================================================
+EDA – Étape 1 : Production et rendement du mil
+Date : 2026-07-23 01:41:34 
+============================================================
+
+1. Superficies (méthode proportionnelle)
+------------------------------------------
+Ménages avec superficie mil > 0 : 1187
+Superficie (ha) : min=0.0002  Q1=1.0819  médiane=2.0930  Q3=3.8500  max=40.0000
+Décision : superficie = GPS si disponible, sinon déclarée convertie en ha ; pourcentage manquant -> 100% uniquement si culture principale.
+
+2. Production (s16d_conv)
+-----------------------------
+Ménages avec production > 0 : 893
+Production (kg) : min=0  médiane=850  max=25300
+Décision : production = somme des usages convertis (table EAC).
+
+3. Rendements
+-------------
+Avant winsorisation : 893 ménages
+  Min=0.8  Q1=210.5  Médiane=410.0  Q3=787.2  Max=37500.0
+  Nb > 10 000 kg/ha : 4
+  Nb >  5 000 kg/ha : 14
+Après winsorisation (1%-99%) : Min=7.1  Médiane=410.0  Max=6594.0
+Décision : winsorisation simple, pas de plafond agronomique.
+
+4. Intrants (s16b)
+-------------------
+Nombre de lignes d'intrants : 4483
+Types d'intrants déclarés :
+
+  1   2   3   4   5   6   7   8   9  10  11  12  13  14  15 
+595 443 377 139 198  72 101 302  51  13 858 311 223 120  24 
+ 16  17  18  19  20  22 
+152  37 165 232  10  60 
+Décision : variables binaires (engrais inorganique, pesticides) et valeur achetée.
+
+5. Autres variables
+-------------------------------
+Labour (majoritaire) :
+
+  attele   manuel motorise 
+     829      245       96 
+Fertilité déclarée (majoritaire) :
+
+  bonne  faible moyenne 
+    291     157     722 
+Âge chef (calculé) : min=20  médiane=51  max=97  NA=19
+Part éducation formelle (chef) : 18.1%
+
+EDA terminée.

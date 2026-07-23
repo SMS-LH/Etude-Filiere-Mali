@@ -1,0 +1,133 @@
+============================================================
+EDA – Étape 0 : Qualité des données pour mil, sorgho, riz, maïs
+Date : 2026-07-23 01:41:26 
+============================================================
+
+1. Poids de sondage (hhweight)
+---------------------------------
+  Min    : 6.40
+  Max    : 3870.39
+  Moyenne: 468.7
+  NAs    : 0
+
+2. Superficies des parcelles (s16a)
+-------------------------------------
+Nombre total de parcelles candidates : 4720
+Répartition des unités de superficie (s16aq09b) :
+
+   1    2 <NA> 
+4522  162   36 
+
+Superficie déclarée (s16aq09a) par culture :
+  Mil      : 1363 parcelles
+         Min=   0.10  Médiane=   2.00  Max= 100.00  NA=0
+         Parcelles avec GPS disponible : 834
+
+  Sorgho   :  893 parcelles
+         Min=   0.10  Médiane=   2.00  Max=  60.00  NA=0
+         Parcelles avec GPS disponible : 693
+
+  Riz      : 1378 parcelles
+         Min=   0.01  Médiane=   1.00  Max= 750.00  NA=36
+         Parcelles avec GPS disponible : 559
+
+  Maïs    : 1086 parcelles
+         Min=   0.12  Médiane=   1.00  Max= 500.00  NA=0
+         Parcelles avec GPS disponible : 859
+
+Décision : superficie retenue = GPS si disponible, sinon déclarée convertie en ha.
+          La méthode 'culture principale' est utilisée pour le classement des cultures.
+
+3. Quantités récoltées converties en kg (s16c_conv)
+-----------------------------------------------------
+(Conversion réalisée avec la table externe EAC)
+  Mil      :  1385 lignes
+         recolte_kg : Min=      1.0  Médiane=    700.0  Max=   6000.0  NA=1348
+         Unités UML utilisées : 
+ 1  3  4  5  6  7 10 
+ 3  7 12  1  1 11  2 
+
+  Sorgho   :  1001 lignes
+         recolte_kg : Min=     50.0  Médiane=    500.0  Max=   1800.0  NA=986
+         Unités UML utilisées : 
+ 1  3  5  6  7 10 
+ 3  3  1  1  6  1 
+
+  Riz      :  1380 lignes
+         recolte_kg : Min=      1.0  Médiane=    200.0  Max=  20000.0  NA=1311
+         Unités UML utilisées : 
+ 1  2  5  6  7  9 13 
+30  1  1  2 36  1  1 
+
+  Maïs    :  1107 lignes
+         recolte_kg : Min=      3.0  Médiane=    900.0  Max=  10000.0  NA=1082
+         Unités UML utilisées : 
+ 1  2  3  6  7  8 10 11 13 
+ 4  1  6  1 12  1  1  1  1 
+
+Décision : les quantités converties sont utilisées pour le calcul de la production.
+          Les valeurs extrêmes (hors 5e-95e percentiles) sont winsorisées dans les rendements.
+
+4. Ventes (s16d_conv)
+-----------------------
+  Mil      :   98 ménages vendeurs
+         vente_kg : Min=     40.0  Médiane=    500.0  Max=   6200.0
+         revenu   : Min=     5000  Médiane=    83750  Max=  1887000
+
+  Sorgho   :   39 ménages vendeurs
+         vente_kg : Min=     30.0  Médiane=    500.0  Max=   6000.0
+         revenu   : Min=     2650  Médiane=    75000  Max=  1000000
+
+  Riz      :   80 ménages vendeurs
+         vente_kg : Min=     15.0  Médiane=    500.0  Max=  30000.0
+         revenu   : Min=     6000  Médiane=   112500  Max=  4000000
+
+  Maïs    :   80 ménages vendeurs
+         vente_kg : Min=     20.0  Médiane=    500.0  Max= 200000.0
+         revenu   : Min=     2000  Médiane=    90000  Max=  6250000
+
+Décision : les indicateurs de commercialisation sont calculés sur les ménages ayant déclaré une vente.
+          Le taux de commercialisation = quantité vendue / production totale.
+
+5. Consommation (s07b)
+------------------------
+Prévalence brute (non pondérée) par céréale :
+  Mil      : 3192 ménages
+  Sorgho   : 1070 ménages
+  Riz      : 5697 ménages
+  Maïs    : 1880 ménages
+
+Quantités déclarées (UML) pour les produits consommés :
+  Mil      :  3297 lignes,  min= 0.25  médiane= 5.00  max=70.00
+         Part en kg : 74.6%
+  Sorgho   :  1070 lignes,  min= 0.50  médiane= 5.00  max=84.00
+         Part en kg : 73.1%
+  Riz      :  6023 lignes,  min= 0.25  médiane= 7.00  max=63.00
+         Part en kg : 85.9%
+  Maïs    :  2025 lignes,  min= 0.25  médiane= 5.00  max=90.00
+         Part en kg : 70.5%
+
+Décision : la conversion NSU (table EHCVM) est utilisée pour les quantités consommées.
+          Les calories sont ajustées pour la partie non comestible (refuse).
+
+============================================================
+DÉCISIONS FINALES
+============================================================
+- Produit retenu pour l'étude de filière : le mil.
+  Justification : il domine en superficie et en nombre de producteurs,
+  c'est une culture vivrière essentielle sans dépendance aux importations.
+- Comparaison élargie à 4 céréales pour le cadrage.
+- Superficies : culture principale de la parcelle, GPS prioritaire.
+- Conversion des unités de production : table externe EAC (Charretée, Bassine,
+  Panier, Gerbe) avec facteurs par produit × région × milieu.
+- Conversion des unités de consommation : table NSU standard EHCVM.
+- Indicateurs pondérés par les poids d'enquête (hhweight).
+- Rendements winsorisés à 1% et 99%.
+- FAOSTAT : production et commerce via fichiers Excel (.xls) ; disponibilité et
+  calories via le fichier RDS issu des bilans alimentaires.
+- Balance commerciale riz : calculée sur l'item 'Riz, paddy (riz blanchi
+  équivalent)', qui agrège les importations de riz usiné/brisures/décortiqué
+  reconverties en équivalent-paddy. L'item 'Riz' seul ne couvre que le paddy
+  brut et sous-estime massivement la dépendance aux importations.
+============================================================
+

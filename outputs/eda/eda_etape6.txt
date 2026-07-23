@@ -1,0 +1,32 @@
+============================================================
+EDA – Étape 6 : Impact de la filière mil sur la sécurité alimentaire
+Date : 2026-07-23 01:42:08 
+============================================================
+
+1. Sécurité alimentaire (FIES et HDDS)
+----------------------------------------
+Score FIES (0-8) : min=0  Q1=0  médiane=1  Q3=3  max=8  moyenne=1.79  NA=0
+Score HDDS (0-12) : min=2  Q1=8  médiane=10  Q3=11  max=12  moyenne=9.28  NA=5
+
+2. Participation à la filière mil
+----------------------------------
+Producteurs de mil : 1170 (19.0%)
+Consommateurs de mil : 3192 (52.0%)
+
+Score FIES moyen par statut :
+# A tibble: 4 × 4
+  groupe                        FIES_moyen HDDS_moyen     n
+  <chr>                              <dbl>      <dbl> <int>
+1 Consommateur uniquement             1.81       9.66  2253
+2 Ni producteur ni consommateur       1.74       9.14  2720
+3 Producteur uniquement               1.50       8.58   231
+4 Producteur-consommateur             1.97       8.92   939
+
+3. Variables de contrôle (aperçu)
+-----------------------------------
+Âge chef (calculé) : min=14  médiane=49  max=97  NA=0
+Éducation chef (binaire) : 9.9% avec éducation formelle
+Taille du ménage : min=1  médiane=6  max=60
+Log dépense/tête : moyenne=12.83  NA=0
+
+EDA terminée.

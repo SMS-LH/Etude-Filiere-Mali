@@ -1,0 +1,21 @@
+Package: filiere.mali
+Type: Package
+Title: Analyse de Filiere Agricole - EHCVM Mali 2021/2022
+Version: 0.1.0
+Authors@R: c(person("Aissatou", "SAMB", email = "aissatousamb2@gmail.com", role = c("aut", "cre")), person("Mourtalla", "SALL", email = "mouslim0234@gmail.com", role = "aut"))
+Description: Outils reproductibles pour l'etude de la filiere mil a partir des donnees EHCVM Mali 2021/2022.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+Imports:
+    dplyr,
+    haven,
+    sf,
+    fixest,
+    ggplot2,
+    stats
+Suggests:
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Config/roxygen2/version: 8.0.0

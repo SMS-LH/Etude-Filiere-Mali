@@ -1,0 +1,29 @@
+============================================================
+EDA – Étape 2 : Commercialisation et prix du mil
+Date : 2026-07-23 01:41:42 
+============================================================
+
+1. Ventes de mil (s16d_conv)
+-------------------------------
+Nombre de ménages vendeurs : 98
+Quantité vendue (kg) : min=40.0  médiane=500.0  max=6200.0
+Revenu (FCFA) : min=5000  médiane=83750  max=1887000
+Prix producteur après bornes 50-1000 FCFA/kg : 95 obs.
+  Min=65.0  Q1=173.2  Médiane=200.0  Q3=260.0  Max=500.0
+
+Canaux de vente :
+
+ 1  2  4 
+46 45  7 
+
+2. Prix de marché (ehcvm_prix)
+--------------------------------
+Nombre de relevés : 1080
+Prix corrigé (FCFA/kg) : min=175  médiane=375  max=500
+
+3. Prix à la consommation (s07b)
+-----------------------------------
+Achats récents retenus : 1589 lignes
+Prix conso (FCFA/kg) : min=65.9  Q1=270.0  Médiane=340.0  Q3=425.0  Max=813.2
+
+EDA terminée.
