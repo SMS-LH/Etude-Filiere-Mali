@@ -52,17 +52,7 @@ cat("HDDS moyen :", round(mean(hdds$hdds), 2), "\n")
 # ------------------------------------------------------------------------------
 # 4. calc_rendement
 # ------------------------------------------------------------------------------
-# CORRECTIF : la production totale ne peut PAS être calculée depuis s16cq16a
-# ("Quantité DÉJÀ récoltée pour la présente campagne") : cette variable ne
-# couvre que 37 ménages sur 1385 pour le mil (2,7%), y compris chez ceux ayant
-# déclaré avoir fini leur récolte (s16cq11 == 1). Ce n'est pas la quantité
-# totale produite par le ménage - la section 16C décrit la parcelle et
-# l'avancement de la campagne (semences, pertes...), pas la production totale.
-#
-# La production totale et son usage (autoconsommation, dons, ventes, stock)
-# sont enregistrés en Section 16D, à couverture quasi complète - c'est cette
-# section qu'utilise déjà le script principal du projet (07_etape5_profilage.R)
-# et qu'on reproduit ici avec les fonctions du package.
+
 cat("\n--- 4. calc_rendement ---\n")
 s16a <- load_filiere(here::here("data", "raw", "EHCVM", "menage", "s16a_me_mli2021.dta"))
 s16d <- load_filiere(here::here("data", "raw", "EHCVM", "menage", "s16d_me_mli2021.dta"))

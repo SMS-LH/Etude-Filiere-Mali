@@ -1,6 +1,6 @@
 ============================================================
 EDA – Étape 1 : Production et rendement du mil
-Date : 2026-07-23 01:41:34 
+Date : 2026-07-23 02:47:33 
 ============================================================
 
 1. Superficies (méthode proportionnelle)
@@ -29,10 +29,10 @@ Décision : winsorisation simple, pas de plafond agronomique.
 Nombre de lignes d'intrants : 4483
 Types d'intrants déclarés :
 
-  1   2   3   4   5   6   7   8   9  10  11  12  13  14  15 
-595 443 377 139 198  72 101 302  51  13 858 311 223 120  24 
- 16  17  18  19  20  22 
-152  37 165 232  10  60 
+  1   2   3   4   5   6   7   8   9  10  11  12  13 
+595 443 377 139 198  72 101 302  51  13 858 311 223 
+ 14  15  16  17  18  19  20  22 
+120  24 152  37 165 232  10  60 
 Décision : variables binaires (engrais inorganique, pesticides) et valeur achetée.
 
 5. Autres variables

@@ -1,0 +1,575 @@
+---
+title: "Carnet de décisions méthodologiques"
+subtitle: "Étude de la filière mil au Mali, EHCVM-2 2021/2022"
+author: |
+  | Aissatou SAMB et Mourtalla SALL
+  | ENSAE Pierre NDIAYE de Dakar
+date: "`r format(Sys.Date(), '%d %B %Y')`"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    latex_engine: xelatex
+fontsize: 11pt
+geometry: margin=2.5cm
+lang: fr
+header-includes:
+  - \usepackage{booktabs}
+  - \usepackage{longtable}
+  - \renewcommand{\contentsname}{Table des matières}
+  - \renewcommand{\tablename}{Tableau}
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(knitr); library(kableExtra)
+
+tab <- function(d, cap) {
+  cap <- gsub("%", "\\\\%", cap)
+  names(d) <- gsub("%", "\\\\%", names(d))
+  kable(d, caption = cap, booktabs = TRUE, escape = FALSE) %>%
+    kable_styling(latex_options = c("HOLD_position", "striped"),
+                  font_size = 9)
+}
+```
+
+\newpage
+
+# À quoi sert ce carnet
+
+Une étude sur données d'enquête n'est jamais une simple application de
+méthodes. C'est une suite de décisions. Les données comportent des
+trous, des erreurs et des ambiguïtés, et il faut trancher à chaque fois.
+
+Ce carnet garde la trace de ces décisions. Pour chacune, nous écrivons
+trois choses : le problème rencontré, les options qui s'offraient à
+nous, et la raison de notre choix. Quand la décision a modifié un
+résultat, nous indiquons de combien.
+
+Il sert à trois usages. D'abord rendre le travail reproductible :
+quelqu'un qui reprend nos données doit pouvoir refaire exactement nos
+calculs. Ensuite le rendre critiquable : celui qui n'est pas d'accord
+avec un choix sait où il a été fait et pourquoi. Enfin garder la mémoire
+de nos propres corrections, car plusieurs décisions ont été prises pour
+réparer une erreur que nous avions commise auparavant.
+
+Les décisions sont classées par étape de l'analyse. Une dernière partie
+rassemble les règles que nous avons appliquées partout.
+
+# Vue d'ensemble
+
+```{r apercu}
+data.frame(
+  `N°` = 1:12,
+  Décision = c(
+    "Reconstituer la production à partir des usages",
+    "Plafonner les rendements au maximum physiologique",
+    "Écarter les déclarations aberrantes au-delà du stock",
+    "Ajuster la superficie par le pourcentage d'occupation",
+    "Prendre la superficie GPS en priorité",
+    "Présenter deux modèles de rendement au lieu d'un",
+    "Nettoyer les prix par bornes puis winsorisation",
+    "Valider les prix par une source externe",
+    "Documenter la transformation comme limite",
+    "Valoriser l'autoconsommation au prix de marché",
+    "Regrouper les produits dérivés d'une même céréale",
+    "Corriger l'identification de la variable d'irrigation"),
+  Étape = c("Production", "Production", "Production", "Production",
+            "Production", "Production", "Prix", "Prix",
+            "Transformation", "Consommation", "Consommation", "Production"),
+  check.names = FALSE
+) %>% tab("Liste des décisions consignées")
+```
+
+\newpage
+
+# Décisions sur la production et les rendements
+
+## Décision 1 : reconstituer la production à partir des usages
+
+**Le problème.** La section 16C de l'enquête contient une question sur
+la quantité récoltée. C'était notre source naturelle pour mesurer la
+production. En vérifiant son remplissage, nous avons constaté qu'elle
+n'était renseignée que pour 37 parcelles de mil sur 1 363, soit moins de
+3 pour cent. Cette source était inexploitable pour un calcul
+représentatif.
+
+**Les options.**
+
+1.  Renoncer au calcul du rendement.
+2.  Travailler sur les 37 parcelles renseignées.
+3.  Reconstruire la production à partir d'une autre source.
+
+La première option nous privait du cœur de l'étude. La deuxième donnait
+un échantillon trop petit et non représentatif, puisque rien ne garantit
+que les ménages qui ont répondu ressemblent aux autres.
+
+**Notre décision.** Nous avons reconstruit la production à partir de la
+section 16D, qui décrit l'usage de la récolte. Pour chaque ménage, nous
+additionnons ce qu'il a consommé, donné, vendu et stocké. La logique est
+comptable : tout ce qui a été produit a nécessairement reçu un usage.
+
+**La vérification.** Nous ne voulions pas nous fier à cette intuition
+sans la tester. Nous avons donc comparé notre reconstruction à la
+récolte déclarée, sur les 37 parcelles où les deux étaient disponibles.
+
+```{r valid-prod}
+data.frame(
+  Mesure = c("Production reconstituée (usages)", "Récolte déclarée (16C)",
+             "Écart"),
+  `Moyenne (kg)` = c("611", "625", "2 %"),
+  check.names = FALSE
+) %>% tab("Validation de la production reconstituée sur 37 parcelles")
+```
+
+L'écart de 2 pour cent nous a paru suffisamment faible pour valider la
+méthode.
+
+**Un point de détail.** La section 16D comporte une modalité « quantité
+à vendre plus tard ». Nous l'avons exclue du calcul. Cette quantité est
+encore physiquement dans le grenier au moment de l'enquête, donc déjà
+comptée dans le stock. L'inclure aurait revenu à compter deux fois le
+même mil.
+
+## Décision 2 : plafonner les rendements au maximum physiologique
+
+**Le problème.** Les premiers rendements calculés atteignaient 20 000 à
+30 000 kilogrammes par hectare. C'est physiquement impossible pour du
+mil.
+
+**Une première approche, que nous avons abandonnée.** Nous avions
+d'abord posé des seuils : écarter les parcelles de moins de 500 mètres
+carrés, écarter les rendements supérieurs à 4 000. Nous y avons renoncé
+pour deux raisons. D'une part, 500 mètres carrés est une parcelle tout à
+fait réelle au Mali, et l'exclure aurait supprimé des observations
+valides. D'autre part, cette approche masque le symptôme sans chercher
+la cause.
+
+**Le diagnostic.** Nous avons donc examiné les ménages aberrants un par
+un. Deux situations bien distinctes sont apparues.
+
+Dans un premier groupe, seul le stock déclaré était démesuré, alors que
+la consommation et les ventes étaient plausibles. Cela ressemble à une
+erreur de saisie sur une seule variable, par exemple 250 sacs au lieu de
+25.
+
+Dans un second groupe, la consommation elle-même était absurde. Un
+ménage déclarait avoir consommé 10 tonnes de mil dans l'année, soit 27
+kilogrammes par jour. Aucun ménage ne mange cela. Ici, c'est la
+déclaration entière qui est fausse.
+
+**Notre décision, en deux règles distinctes.**
+
+Pour le premier groupe, nous plafonnons la production au maximum
+physiologique multiplié par la superficie. Nous retenons le minimum
+entre la production déclarée et ce plafond. Le ménage est conservé, mais
+ramené à ce qui est possible. Les ménages normaux ne sont pas affectés,
+puisque leur production est déjà sous le plafond.
+
+Pour le second groupe, nous écartons le ménage. Aucun plafonnement ne
+peut réparer une déclaration fausse dans son ensemble. Le critère
+opérationnel est le suivant : si le rendement calculé hors stock dépasse
+déjà le plafond, alors l'erreur ne vient pas du stock et le ménage est
+retiré.
+
+**D'où vient le plafond.** Nous ne l'avons pas choisi arbitrairement. Le
+Crop Trust, organisation internationale de référence sur la diversité
+des cultures, indique que le mil peut atteindre 5 000 kilogrammes par
+hectare en conditions optimales, et que les rendements en champ paysan
+se situent couramment entre 500 et 1 000 kilogrammes. Nous avons retenu
+4 000 kilogrammes, en dessous du maximum théorique, pour ne couper que
+ce qui est impossible et jamais ce qui est seulement élevé.
+
+**Généralisation.** Comme nous avions besoin de ce plafond pour
+plusieurs cultures dans les comparaisons, nous avons construit une table
+de plafonds physiologiques couvrant 68 cultures, avec pour chacune le
+nom scientifique, le plafond en kilogrammes par hectare et la source de
+référence. Cette table est intégrée au package décrit en fin de carnet.
+
+## Décision 3 : ajuster la superficie par le pourcentage d'occupation
+
+**Le problème.** Au Mali, une parcelle porte souvent plusieurs cultures
+en même temps, par exemple du mil associé à du niébé. Or si nous
+attribuons au mil la totalité de la surface dès lors qu'il en est la
+culture principale, nous surestimons sa superficie, et par conséquent
+nous sous-estimons son rendement, puisque le rendement est une
+production divisée par une surface.
+
+**La mesure du problème.** Nous avons d'abord regardé combien de
+parcelles étaient concernées, en utilisant la variable qui indique le
+nombre de cultures présentes sur la parcelle.
+
+```{r assoc}
+data.frame(
+  `Nombre de cultures sur la parcelle` = c("1 (culture pure)", "2", "3",
+                                           "4", "5", "Total"),
+  `Parcelles de mil` = c("1 127", "163", "67", "5", "1", "1 363"),
+  check.names = FALSE
+) %>% tab("Parcelles de mil selon le nombre de cultures associées")
+```
+
+Dix-sept virgule trois pour cent des parcelles de mil sont en culture
+associée, soit environ une sur six. Le problème n'était donc pas
+négligeable.
+
+**La solution disponible dans les données.** Nous avons cherché si
+l'enquête permettait de corriger. La section 16C contient une variable
+qui demande quel pourcentage de la parcelle chaque culture occupe.
+
+Nous avons vérifié son remplissage avant de l'utiliser. Elle est
+renseignée pour environ 19 pour cent des parcelles de mil. Ce chiffre
+correspond presque exactement aux 17 pour cent de parcelles en
+association. Autrement dit, la variable n'est remplie que lorsqu'elle a
+un sens, c'est-à-dire lorsque la parcelle est partagée. Sur une parcelle
+en culture pure, la question ne se pose pas et le mil occupe 100 pour
+cent implicitement.
+
+**Notre décision.** Nous multiplions la superficie par ce pourcentage
+lorsqu'il est renseigné, et nous conservons la superficie entière sinon.
+Sur les parcelles concernées, le mil occupe en médiane 70 pour cent de
+la surface.
+
+**La vérification qui a suivi.** Nous avons relancé l'ensemble des
+régressions avec la superficie corrigée, pour nous assurer que nos
+conclusions ne dépendaient pas de cet ajustement. Les mêmes variables
+restent significatives, avec les mêmes signes et des amplitudes très
+proches. Nos résultats sont donc robustes à ce choix.
+
+## Décision 4 : prendre la superficie GPS en priorité
+
+**Le problème.** L'enquête fournit deux mesures de superficie : celle
+déclarée par l'exploitant et celle mesurée au GPS par l'enquêteur. La
+mesure GPS est plus fiable, mais elle n'est disponible que pour une
+partie des parcelles.
+
+**Notre décision.** Nous retenons la mesure GPS quand elle existe, et la
+mesure déclarée sinon. Cela maximise la couverture tout en utilisant la
+meilleure mesure disponible pour chaque parcelle.
+
+**Deux précautions.** D'abord, une superficie GPS égale à zéro n'est pas
+une mesure mais une absence de mesure. Nous la traitons comme manquante
+et nous basculons sur la déclarée, sinon nous aurions eu des parcelles
+de zéro hectare qui auraient produit des rendements infinis.
+
+## Décision 5 : présenter deux modèles de rendement au lieu d'un
+
+**Le problème.** Pour expliquer le rendement, deux spécifications
+étaient possibles. Un modèle des moindres carrés avec des indicatrices
+de région et de milieu, et un modèle à effets fixes de grappe, qui
+compare les ménages au sein d'une même zone d'enquête.
+
+Les deux ne donnent pas exactement les mêmes résultats. La dépense en
+intrants n'apparaît significative que dans le second.
+
+**Les options.** Nous pouvions choisir le modèle qui montrait le
+résultat le plus favorable, ou présenter les deux.
+
+**Notre décision.** Présenter les deux et expliquer leur différence, car
+cette différence est en elle-même un résultat.
+
+**Ce que la comparaison apprend.**
+
+```{r double-modele}
+data.frame(
+  Modèle = c("MCO avec région et milieu", "Effets fixes de grappe"),
+  `Ce qu'il contrôle` = c("Les écarts entre régions",
+                          "Tout ce qui est commun à un village"),
+  `Pouvoir explicatif (R2)` = c("0,24", "0,50"),
+  check.names = FALSE
+) %>% tab("Comparaison des deux spécifications du rendement")
+```
+
+Le pouvoir explicatif double lorsqu'on passe aux effets fixes de grappe.
+Cela signifie que la localisation explique à elle seule environ la
+moitié de la variance des rendements. C'est ce que nous appelons la
+contrainte spatiale.
+
+Cela explique aussi pourquoi les intrants n'apparaissent que dans le
+second modèle : leur effet est masqué par les écarts géographiques tant
+qu'on ne les contrôle pas finement. Le premier modèle mesure surtout où
+l'on cultive, le second ce que l'on fait à endroit donné.
+
+## Décision 6 : corriger l'identification de la variable d'irrigation
+
+Nous consignons cette décision parce qu'elle corrige une erreur.
+
+**Le problème.** Un document de travail que nous avions consulté
+identifiait une variable de la section 16A comme mesurant l'irrigation.
+En allant vérifier son libellé dans le questionnaire, nous avons
+constaté que cette variable portait en réalité sur le mode d'occupation
+de la parcelle, c'est-à-dire sur le statut foncier.
+
+**Notre décision.** Nous avons retenu à la place la variable qui indique
+la principale source d'eau de la parcelle, et nous avons construit un
+indicateur d'irrigation à partir de ses modalités.
+
+**Ce que cela change.** Avec la bonne variable, il apparaît que 97,7
+pour cent des parcelles de mil sont strictement pluviales. L'irrigation
+est donc quasi inexistante pour cette culture, ce qui explique qu'elle
+ne ressorte pas dans nos régressions.
+
+**La règle que nous en tirons.** Nous avons systématiquement vérifié le
+libellé des variables dans le questionnaire officiel avant de les
+utiliser, plutôt que de nous fier à une documentation secondaire.
+
+# Décisions sur les prix et la commercialisation
+
+## Décision 7 : nettoyer les prix par bornes puis winsorisation
+
+**Le problème.** Les prix ne sont pas demandés directement. Nous les
+reconstruisons en divisant un montant par une quantité. Or la moindre
+erreur de saisie sur l'un des deux termes produit un prix absurde, et
+l'erreur est amplifiée par la division.
+
+**Notre décision, en deux étapes.**
+
+D'abord des bornes de plausibilité, entre 50 et 1 000 francs CFA le
+kilogramme. Ces bornes encadrent très largement les prix réels du mil au
+Mali. Une valeur en dehors est nécessairement une erreur, pas un cas
+rare.
+
+Ensuite une winsorisation aux premier et quatre-vingt-dix-neuvième
+centiles. Cette technique ramène les valeurs extrêmes restantes aux
+bornes de la distribution, au lieu de les supprimer.
+
+**Pourquoi winsoriser plutôt que supprimer.** Sur un échantillon de
+moins de 100 vendeurs, chaque observation compte. Supprimer une valeur
+extrême nous fait perdre toute l'information du ménage. La ramener à une
+valeur haute mais plausible conserve l'information tout en évitant qu'un
+point aberrant ne domine la moyenne.
+
+## Décision 8 : valider les prix par une source externe
+
+**Le contexte.** Nous avions déjà reconstruit tous nos prix quand nous
+avons découvert un fichier annexe contenant des relevés de prix de
+marché officiels de l'INSTAT.
+
+**Les options.** Nous pouvions ignorer ce fichier, puisque nos calculs
+étaient faits. Nous pouvions aussi remplacer nos prix par les siens.
+
+**Notre décision.** Ni l'un ni l'autre. Nous avons conservé nos prix
+reconstruits et nous avons utilisé le fichier officiel comme test de
+validation.
+
+**Le raisonnement.** Ces deux sources sont totalement indépendantes.
+D'un côté, ce que des ménages déclarent avoir payé. De l'autre, ce qu'un
+enquêteur a relevé sur un étal de marché. Si notre reconstruction était
+fausse, il n'y a aucune raison qu'elle tombe au même endroit que les
+relevés officiels.
+
+**Le résultat.**
+
+```{r valid-prix}
+data.frame(
+  Source = c("Prix consommateur reconstruit (ménages)",
+             "Prix de marché officiel (INSTAT)"),
+  `Médiane (FCFA/kg)` = c("340", "375"),
+  check.names = FALSE
+) %>% tab("Validation croisée des prix du mil")
+```
+
+La concordance tient au niveau national et se vérifie également région
+par région. C'est notre principale garantie de fiabilité sur toute la
+partie prix.
+
+**La règle générale que nous en tirons.** Chaque fois qu'une source
+externe indépendante existe, il faut s'en servir pour se contrôler
+soi-même, même quand on n'en a pas besoin pour calculer.
+
+# Décision sur la transformation
+
+## Décision 9 : documenter une limite plutôt que fabriquer un indicateur
+
+**Le problème.** Une analyse de filière attend un maillon
+transformation. Pour le mil, ce maillon existe forcément, puisque le
+grain doit être décortiqué et moulu avant d'être consommé.
+
+Nous avons exploré la section consacrée aux entreprises non agricoles.
+Elle classe les activités par grands secteurs, commerce, artisanat,
+restauration, services, sans catégorie dédiée à la transformation
+céréalière et surtout sans rattachement de l'activité à un produit
+précis. Impossible donc de savoir si une activité artisanale porte sur
+le mil ou sur autre chose.
+
+**Les options.** Nous pouvions construire une approximation, par exemple
+en supposant qu'une fraction des activités artisanales concerne le mil
+au prorata de sa place dans la production.
+
+**Notre décision.** Nous avons refusé. Un chiffre fabriqué à partir
+d'une hypothèse invérifiable est plus dangereux qu'une absence de
+chiffre. Il donne une fausse impression de précision et il se propage
+ensuite dans toute l'analyse, sans que le lecteur sache qu'il repose sur
+une supposition.
+
+Nous avons documenté l'absence et nous l'avons interprétée.
+
+**Pourquoi cette absence est un résultat.** Si la transformation du mil
+est invisible dans une enquête aussi détaillée, ce n'est pas seulement
+un défaut du questionnaire. C'est aussi parce que cette transformation
+est domestique. Elle est réalisée à la maison, au pilon ou au moulin de
+quartier, et elle n'est pas déclarée comme activité économique parce que
+les ménages ne la perçoivent pas comme telle. La conséquence pour la
+filière est réelle : il n'y a pas d'agro-industrie du mil, donc pas de
+valeur ajoutée créée localement.
+
+# Décisions sur la consommation
+
+## Décision 10 : valoriser l'autoconsommation au prix de marché
+
+**Le problème.** L'enquête donne la valeur du mil acheté, puisqu'il y a
+une transaction. Elle ne donne aucune valeur pour le mil autoconsommé,
+puisqu'il n'y a pas eu d'achat. Or l'autoconsommation représente près de
+60 pour cent du mil consommé.
+
+**Pourquoi ne rien faire aurait été pire.** Si nous n'avions compté que
+la partie achetée, nous aurions sous-estimé le poids du mil dans
+l'alimentation. Surtout, nous l'aurions sous-estimé davantage chez les
+producteurs, c'est-à-dire chez les plus pauvres, puisque ce sont eux qui
+autoconsomment le plus. Le biais aurait été systématique et orienté dans
+un sens défavorable à notre analyse sociale.
+
+**Notre décision.** Nous attribuons au mil autoproduit une valeur
+monétaire, en le multipliant par le prix de marché.
+
+**Ce que cette convention suppose.** C'est le raisonnement du coût
+d'opportunité : ce mil, le ménage aurait pu le vendre, donc il a une
+valeur même s'il n'a pas été vendu. Cette convention est standard en
+économie du développement, mais elle n'est pas neutre. Elle suppose que
+le ménage aurait pu écouler sa production au prix du marché, ce qui est
+discutable pour un ménage enclavé. Nous l'assumons faute de meilleure
+alternative, et nous la signalons.
+
+## Décision 11 : regrouper les produits dérivés d'une même céréale
+
+**Le problème.** Le mil n'apparaît pas sous un seul code dans la
+nomenclature des produits alimentaires. Il y a le grain, la farine et la
+semoule, sous trois codes distincts. Le riz est éclaté sur cinq codes,
+le maïs sur quatre.
+
+**Notre décision.** Nous regroupons tous les codes d'une même céréale
+sous une famille unique.
+
+**Pourquoi.** Ne compter que le grain aurait sous-estimé la consommation
+de chaque céréale. Surtout, cela aurait faussé la comparaison entre
+céréales, car elles ne sont pas éclatées sur le même nombre de codes. La
+correspondance complète que nous avons établie est reproduite dans le
+rapport.
+
+**Un travail comparable pour le score de diversité.** La construction du
+score HDDS a demandé de rattacher chacun des 159 produits alimentaires
+de l'enquête à l'un des 12 groupes de la classification FAO. Ce travail
+de correspondance est fastidieux mais il conditionne entièrement la
+validité du score.
+
+## Décision 12 : construire un indicateur d'acheteurs nets
+
+**Le besoin.** Nous voulions mesurer la vulnérabilité des ménages à une
+hausse du prix du mil. Or cette vulnérabilité dépend de la position du
+ménage. Pour un ménage qui vend, une hausse de prix est un gain. Pour un
+ménage qui achète, c'est une perte. Le même choc produit deux effets
+opposés.
+
+**Notre décision.** Nous avons construit un indicateur qui ne figure pas
+dans l'enquête. Pour chaque ménage, nous comparons ce qu'il consomme de
+mil et ce qu'il en produit. Si la consommation dépasse la production, il
+est acheteur net.
+
+**Ce que cela apporte.** Cet indicateur identifie précisément les zones
+à cibler pour une politique de stabilisation des prix ou d'aide
+alimentaire. Il montre que la vulnérabilité est très concentrée
+géographiquement, avec plus de deux tiers des ménages acheteurs nets à
+Tombouctou contre moins d'un sur douze à Sikasso.
+
+# Règles appliquées à toutes les étapes
+
+Certaines règles ne correspondent pas à une décision ponctuelle mais ont
+été appliquées partout. Nous les rassemblons ici.
+
+**Pondérer tous les agrégats.** L'échantillon n'est pas représentatif
+tel quel. Chaque ménage porte un coefficient d'extrapolation qui indique
+combien de ménages maliens il représente. Nous appliquons ce poids à
+toute moyenne, proportion ou total destiné à décrire la population.
+
+**Grouper les erreurs standards par grappe.** Les ménages d'un même
+village partagent le même climat, le même marché et les mêmes
+infrastructures. Leurs situations ne sont pas indépendantes. Ne pas en
+tenir compte conduirait à sous-estimer les écarts-types et donc à croire
+significatifs des résultats qui ne le sont pas.
+
+**Vérifier les libellés dans le questionnaire.** Nous avons pris
+l'habitude d'ouvrir le questionnaire officiel avant d'utiliser une
+variable, plutôt que de nous fier à son nom ou à une documentation
+secondaire. La décision 12 montre pourquoi.
+
+**Vérifier le remplissage avant d'utiliser.** Plusieurs de nos décisions
+viennent d'un simple comptage de valeurs manquantes fait avant tout
+calcul. C'est ce qui nous a conduits à abandonner la récolte déclarée
+et, à l'inverse, à faire confiance au pourcentage d'occupation.
+
+**Justifier tout seuil par une référence.** Nous n'avons retenu aucun
+seuil arbitraire. Le plafond de rendement vient d'une source
+agronomique, les seuils d'insécurité alimentaire viennent de la FAO, les
+bornes de prix viennent des ordres de grandeur observés sur les marchés
+maliens.
+
+**Croiser les sources quand c'est possible.** Nous avons validé la
+production reconstituée contre la récolte déclarée, et les prix
+reconstruits contre les relevés officiels. Une méthode qui concorde avec
+une source indépendante est beaucoup plus solide qu'une méthode
+seulement cohérente avec elle-même.
+
+# Le package filiereMLI
+
+Nous avons construit un package R, nommé filiereMLI. Il contient huit
+fonctions et une table de données.
+
+```{r package}
+data.frame(
+  Fonction = c("calc_rendement", "prix_chaine", "reg_filiere", "calc_fies",
+               "calc_hdds", "profil_menage", "carte_filiere", "load_filiere",
+               "plafonds_rendement"),
+  Rôle = c("Rendement avec plafond physiologique et winsorisation",
+           "Prix relevé ou reconstruit, avec nettoyage au choix",
+           "Régression pondérée avec effets fixes et erreurs groupées",
+           "Score d'insécurité alimentaire et seuils FAO",
+           "Score de diversité alimentaire sur 12 groupes",
+           "Profil socioéconomique pondéré par groupe",
+           "Carte choroplèthe par région",
+           "Chargement avec harmonisation des identifiants",
+           "Table de 68 cultures avec plafonds et sources")
+) %>% tab("Contenu du package filiereMLI")
+```
+
+Trois choix de conception méritent d'être signalés.
+
+Les fonctions sont génériques et non spécifiques au mil ou au Mali. La
+culture est passée en argument, sous son nom anglais, qui sert de clé
+dans la table des plafonds. Le package est donc directement réutilisable
+pour une étude de filière sur une autre culture ou un autre pays.
+
+Chaque fonction est documentée et dispose de sa page d'aide, accessible
+comme pour n'importe quelle fonction R.
+
+Enfin, ce package garantit la reproductibilité de l'étude. Toutes les
+décisions consignées dans ce carnet sont encapsulées dans du code testé.
+Quelqu'un qui reprend nos données obtiendra exactement les mêmes
+chiffres.
+
+# Ce que nous retenons
+
+Deux décisions ont eu un effet mesurable sur nos résultats et méritent
+d'être retenues.
+
+La reconstitution de la production à partir des usages nous a permis de
+calculer un rendement sur plus de 800 ménages, là où la source directe
+n'en offrait que 37. Sans cette décision, il n'y aurait pas d'analyse de
+la production.
+
+La validation des prix par une source externe n'a rien changé à nos
+chiffres, mais elle a changé la confiance que nous pouvons leur
+accorder. C'est le type de vérification qui ne produit aucun résultat
+nouveau et qui reste pourtant indispensable.
